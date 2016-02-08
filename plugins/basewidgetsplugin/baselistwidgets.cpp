@@ -172,9 +172,11 @@ void BaseList::retranslate()
             Utils::warningMessageBox(
                     tr("Wrong form's translations"),
                     tr("You asked to change the language of the form to %1.\n"
-                       "But this an error while reading translation of %2.\n"
+                       "But there was an error while reading translation of %2.\n"
                        "Number of items of the translation (%3) are wrong.")
-                    .arg(QLocale().name(), m_FormItem->spec()->label()).arg(list.count()));
+                    .arg(QLocale().name())
+                    .arg(m_FormItem->spec()->label())
+                    .arg(list.count()));
             return;
         }
         // keep selection
@@ -598,9 +600,11 @@ void BaseCombo::retranslate()
             Utils::warningMessageBox(
                     tr("Wrong form's translations"),
                     tr("You asked to change the language of the form to %1.\n"
-                       "But this an error while reading translation of %2.\n"
+                       "But there was an error while reading translation of %2.\n"
                        "Number of items of the translation (%3) are wrong.")
-                    .arg(QLocale().name(), m_FormItem->spec()->label()).arg(list.count()));
+                    .arg(QLocale().name())
+                    .arg(m_FormItem->spec()->label())
+                    .arg(list.count()));
             return;
         }
         // refresh combo items
