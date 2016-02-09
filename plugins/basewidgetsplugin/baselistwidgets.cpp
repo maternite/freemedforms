@@ -172,7 +172,7 @@ void BaseList::retranslate()
             Utils::warningMessageBox(
                     tr("Wrong form's translations"),
                     tr("You asked to change the language of the form to %1.\n"
-                       "But there was an error while reading translation of %2.\n"
+                       "But there was an error while reading translation of %2. (BaseList)\n"
                        "Number of items of the translation (%3) are wrong.")
                     .arg(QLocale().name())
                     .arg(m_FormItem->spec()->label())
@@ -600,7 +600,7 @@ void BaseCombo::retranslate()
             Utils::warningMessageBox(
                     tr("Wrong form's translations"),
                     tr("You asked to change the language of the form to %1.\n"
-                       "But there was an error while reading translation of %2.\n"
+                       "But there was an error while reading translation of %2. (BaseCombo)\n"
                        "Number of items of the translation (%3) are wrong.")
                     .arg(QLocale().name())
                     .arg(m_FormItem->spec()->label())
