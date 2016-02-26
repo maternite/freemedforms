@@ -21,7 +21,7 @@
 /***************************************************************************
  *  Main developer: Eric MAEKER, <eric.maeker@gmail.com>                   *
  *  Contributors:                                                          *
- *       NAME <MAIL@ADDRESS.COM>                                           *
+ *       Jerome PINGUET <jerome@jerome.cc>                                 *
  *       NAME <MAIL@ADDRESS.COM>                                           *
  ***************************************************************************/
 #ifndef DRUGSBASE_CONSTANTS_H
@@ -131,7 +131,7 @@ namespace Constants {
     // ICONS
     const char * const  I_SEARCHCOMMERCIAL =  "pill.png";              /*!< \brief Themed icon name for Commercial search. */
     const char * const  I_SEARCHMOLS =        "molecule.png";          /*!< \brief Themed icon name for Molecules search. */
-    const char * const  I_SEARCHINN =         "black_dci.png";         /*!< \brief Themed icon name for INN search. */
+    const char * const  I_SEARCHINN =         "black_inn.png";         /*!< \brief Themed icon name for INN search. */
 
     const char * const  I_DRUGSINFOS =        "drug_infos.png";
     const char * const  I_PROTOCOL_PRESCRIBEANDSAVE =  "protocol_saveandprescribe.png";
