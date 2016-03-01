@@ -383,14 +383,14 @@ namespace Constants {
     /** \brief Used by DosageModel for column representation. */
     enum Dosage
     {
-        Id = 0,                 /*!< \brief Identifiant du dosage. integer. */
-        Uuid,                   /*!< \brief Identifiant unique --> varchar(40) */
-        DrugsDatabaseIdentifiant,    /*!< \brief Unique FreeDiams identifiant */
+        Id = 0,                 /*!< \brief Dosage identifier. integer. */
+        Uuid,                   /*!< \brief Unique identifier --> varchar(40) */
+        DrugsDatabaseIdentifiant,    /*!< \brief Unique FreeDiams identifier */
         INN_LK,                 /*!< \brief Si la prescription est la même pour toutes les DCI alors le champs est renseigné, sinon laissé à -1. integer */
-        InnLinkedDosage,        /*!< \brief Linked dosage of the Inn. */
+        InnLinkedDosage,        /*!< \brief Linked dosage of the INN. */
         DrugUid_LK,                 /*!< \brief Si la prescription est unique valable pour ce médicament le code CIS et renseigné, sinon laissé à -1. integer */
-        CIP_LK,                 /*!< \brief Code CIP           --> int */
-        Label,                  /*!< \brief Libellé            --> varchar( 300 ) */
+        CIP_LK,                 /*!< \brief CIP code. CIP (Code Identifiant de Présentation) is a French dosage form coding system. --> int */
+        Label,                  /*!< \brief Label            --> varchar( 300 ) */
 
         IntakesFrom,             /*!< \brief Nb de prises       --> double */
         IntakesTo,               /*!< \brief Nb de prises       --> double  */
