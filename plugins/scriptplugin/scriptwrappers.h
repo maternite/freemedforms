@@ -72,6 +72,7 @@ class FormItemScriptWrapper : public QObject
     Q_PROPERTY(QVariant currentText     READ currentText        WRITE setCurrentText SCRIPTABLE true)
     Q_PROPERTY(bool     enabled         READ isEnabled          WRITE setEnabled     SCRIPTABLE true)
     Q_PROPERTY(bool     checked         READ isChecked          WRITE setChecked     SCRIPTABLE true)
+    Q_PROPERTY(bool     visible         READ isVisible          WRITE setVisible     SCRIPTABLE true)
     Q_PROPERTY(QVariant currentUuid     READ currentUuid        WRITE setCurrentUuid SCRIPTABLE true)
 
 public:
@@ -99,6 +100,9 @@ public Q_SLOTS:
 
     void setEnabled(const bool enable);
     bool isEnabled() const;
+
+    void setVisible(const bool visible);
+    bool isVisible() const;
 
     QWidget *ui() const;
 

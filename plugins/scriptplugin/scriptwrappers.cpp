@@ -254,6 +254,21 @@ void FormItemScriptWrapper::setChecked(const bool check)
     }
 }
 
+bool FormItemScriptWrapper::isVisible() const
+{
+    if (m_Item) {
+        return m_Item->formWidget()->isVisible();
+    }
+    return false;
+}
+
+void FormItemScriptWrapper::setVisible(const bool visible)
+{
+    if (m_Item) {
+        m_Item->formWidget()->setVisible(visible);
+    }
+}
+
 QVariant FormItemScriptWrapper::currentUuid() const
 {
     if (m_Item) {
