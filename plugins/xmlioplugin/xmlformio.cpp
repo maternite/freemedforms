@@ -40,6 +40,7 @@
 #include <coreplugin/icore.h>
 #include <coreplugin/ipatient.h>
 #include <coreplugin/isettings.h>
+#include <coreplugin/iuser.h>
 #include <coreplugin/constants_tokensandsettings.h>
 
 //#include <formmanagerplugin/formmanager.h>
@@ -519,8 +520,9 @@ bool XmlFormIO::checkDatabaseFormFileForUpdates() const
         foreach(Form::FormIODescription *fileDescription, fileDescriptionList) {
             // check version number of forms in the file
             Utils::VersionNumber fileVersion(fileDescription->data(Form::FormIODescription::Version).toString());
-
-            if (fileVersion.versionString() == "test" || fileVersion > dbVersion) {
+            qWarning() << "isAdministrator()" << Core::ICore::instance()->user()->isAdministrator();
+            if ((fileVersion.versionString() == "test" || fileVersion > dbVersion)
+                && Core::ICore::instance()->user()->isAdministrator()) {
                 // update database
                 XmlFormName &form = formName(fileDescription->data(Form::FormIODescription::UuidOrAbsPath).toString(), m_FormNames);
                 if (!formsToUpdate.contains(form)) {
