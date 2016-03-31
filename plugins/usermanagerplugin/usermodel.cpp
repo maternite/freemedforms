@@ -27,7 +27,7 @@
 /**
   \class UserPlugin::UserModel
   Users are represented into a table model. Each row represents a user, each column a value.
-  The current user represents the actually logged user. Before the current user can be changed (disconnection,
+  The current user represents the currently logged user. Before the current user can be changed (disconnection,
   another user connection) IUserListener registered in the PluginManager are asked.
   Set filter with setFilter().
 
@@ -132,7 +132,7 @@ public:
         m_Uuid_UserList.insert(m_CurrentUserUuid, current);
     }
 
-    // Retreive all users data and store it to the cache of the model.
+    // Retrieve all users data and store it to the cache of the model.
     // \sa numberOfUsersInMemory(), m_Uuid_UserList
     bool addUserFromDatabase(const QString &uuid)
     {
@@ -372,6 +372,7 @@ public:
         case Core::IUser::AgendaRights : toReturn = user->rightsValue(USER_ROLE_AGENDA); break;
         case Core::IUser::LoginHistory : toReturn = user->loginHistory(); break;
         case Core::IUser::DebugText : toReturn = user->debugText(); break;
+        case Core::IUser::FormUpdateNotification : toReturn = user->formUpdateNotification(); break;
         default : toReturn = QVariant();
     };
         return toReturn;

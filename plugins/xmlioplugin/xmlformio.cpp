@@ -523,12 +523,19 @@ bool XmlFormIO::checkDatabaseFormFileForUpdates() const
             qWarning() << "isAdministrator()" << Core::ICore::instance()->user()->isAdministrator();
             if ((fileVersion.versionString() == "test" || fileVersion > dbVersion)
                 && Core::ICore::instance()->user()->isAdministrator()) {
-                // update database
+                // user is admin, update fmf_xmlforms database
                 XmlFormName &form = formName(fileDescription->data(Form::FormIODescription::UuidOrAbsPath).toString(), m_FormNames);
                 if (!formsToUpdate.contains(form)) {
                     formsToUpdate << form;
                     fileDescription->setData(Form::FormIODescription::UpdateAvailable_OldVersion, dbVersion.versionString());
                     m_FormUpdatesList << Form::FormIODescription(*fileDescription);
+                }
+            }
+            if ((fileVersion.versionString() == "test" || fileVersion > dbVersion)
+                && !Core::ICore::instance()->user()->isAdministrator()) {
+                // warn normal user that a form update exists and that it should be performed by an administrator
+                if (Core::IUser::FormUpdateNotification) {
+                    //notify of update
                 }
             }
         }

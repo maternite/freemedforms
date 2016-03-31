@@ -117,7 +117,8 @@ public:
         LoginHistory,             /*!< \brief Full login history of the user. */
         IsModified,
         DebugText,                 /*!< \brief For debugging purpose. */
-        NumberOfColumns
+        NumberOfColumns,
+        FormUpdateNotification      /*!< \brief Notify user of form update. 0=No, 1=Yes. (NUMERIC type) */
     };
 
     enum UserRight

@@ -171,7 +171,7 @@ bool UserDynamicData::isNull() const
     return d->m_IsNull;
 }
 
-/** \brief Returns to if the value has change since last call of feedFromSql(). */
+/** \brief Returns true if the value has change since last call of feedFromSql(). */
 bool UserDynamicData::isModified() const
 {
     return d->m_IsDirty;
@@ -951,6 +951,13 @@ void UserData::addLoginToHistory()
     setModified(true);
 }
 
+/** Set FormUpdateNotification to 0 if val is false, to 1 is val is true */
+void UserData::setFormUpdateNotification(const bool &val)
+{
+    setDynamicDataValue(USER_DATA_FORMUPDATENOTIFICATION, val, UserDynamicData::Numeric);
+    setModified(true);
+}
+
 QString UserData::decryptedLogin() const
 {
     return Utils::loginFromSQL(value(Table_USERS, USER_LOGIN));
@@ -1162,6 +1169,16 @@ QString UserData::fullName() const
     QString r = title() + " " + usualName() + " " + otherNames() + " " + firstname();
     r.replace("  ", " ");
     return r;
+}
+
+/** Return the value of USER_DATA_FORMUPDATENOTIFICATION
+ *  If it is Null, return True (default behaviour is to notify user of form update)
+ */
+bool UserData::formUpdateNotification() const
+{
+    if (dynamicDataValue(USER_DATA_FORMUPDATENOTIFICATION) == QVariant())
+        return true;
+    return dynamicDataValue(USER_DATA_FORMUPDATENOTIFICATION).toBool();
 }
 
 //---------------------------------------------------------------------------------------

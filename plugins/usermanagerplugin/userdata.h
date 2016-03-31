@@ -205,6 +205,8 @@ public:
 
     void  addLoginToHistory();
 
+    void setFormUpdateNotification(const bool &val);
+
     // simplified getters
     int id() const                       { return value(Table_USERS, USER_ID).toInt(); }
     QString uuid() const                 { return value(Table_USERS, USER_UUID).toString(); }
@@ -268,6 +270,7 @@ public:
 
     QString preferences() const          { return dynamicDataValue(USER_DATA_PREFERENCES).toString(); }
     QString loginHistory() const         { return dynamicDataValue(USER_DATA_LOGINHISTORY).toString(); }
+    bool formUpdateNotification() const;
 
     // Rights getters
     QVariant rightsValue(const char *name) const;

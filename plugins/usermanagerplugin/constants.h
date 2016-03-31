@@ -42,23 +42,24 @@ namespace Constants {
     const char * const USER_DB_VERSION              = "0.9.8";
 
     // constants for DATA table represent DATANAME field
-    const char * const USER_DATA_PHOTO             = "identity.photo";
-    const char * const USER_DATA_DOB               = "identity.dob";
-    const char * const USER_DATA_STREET            = "identity.adress";
-    const char * const USER_DATA_ZIPCODE           = "identity.zip";
-    const char * const USER_DATA_STATEPROVINCE     = "identity.state";
-    const char * const USER_DATA_CITY              = "identity.city";
-    const char * const USER_DATA_COUNTRY           = "identity.country";
-    const char * const USER_DATA_TEL1              = "identity.tel1";
-    const char * const USER_DATA_TEL2              = "identity.tel2";
-    const char * const USER_DATA_TEL3              = "identity.tel3";
-    const char * const USER_DATA_FAX               = "identity.fax";
-    const char * const USER_DATA_PRACTIDENTIFIANT  = "identity.identifiant";
-    const char * const USER_DATA_SPECIALTY         = "identity.specialty";
-    const char * const USER_DATA_QUALIFICATION     = "identity.qualification";
-    const char * const USER_DATA_PREFERENCES       = "pref";
-    const char * const USER_DATA_DATAPACK_CONFIG   = "config.datapack";
-    const char * const USER_DATA_LOGINHISTORY      = "loginHistory";
+    const char * const USER_DATA_PHOTO                  = "identity.photo";
+    const char * const USER_DATA_DOB                    = "identity.dob";
+    const char * const USER_DATA_STREET                 = "identity.adress";
+    const char * const USER_DATA_ZIPCODE                = "identity.zip";
+    const char * const USER_DATA_STATEPROVINCE          = "identity.state";
+    const char * const USER_DATA_CITY                   = "identity.city";
+    const char * const USER_DATA_COUNTRY                = "identity.country";
+    const char * const USER_DATA_TEL1                   = "identity.tel1";
+    const char * const USER_DATA_TEL2                   = "identity.tel2";
+    const char * const USER_DATA_TEL3                   = "identity.tel3";
+    const char * const USER_DATA_FAX                    = "identity.fax";
+    const char * const USER_DATA_PRACTIDENTIFIANT       = "identity.identifiant";
+    const char * const USER_DATA_SPECIALTY              = "identity.specialty";
+    const char * const USER_DATA_QUALIFICATION          = "identity.qualification";
+    const char * const USER_DATA_PREFERENCES            = "pref";
+    const char * const USER_DATA_DATAPACK_CONFIG        = "config.datapack";
+    const char * const USER_DATA_LOGINHISTORY           = "loginHistory";
+    const char * const USER_DATA_FORMUPDATENOTIFICATION = "formUpdateNotification";
 
 
     const char* const  PAPERS_MARK                     = "papers";                  /** \brief x \sa tkUser::setDynamicDataValue() */
