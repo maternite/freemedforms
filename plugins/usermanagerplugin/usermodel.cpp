@@ -1056,6 +1056,7 @@ bool UserModel::setData(const QModelIndex &item, const QVariant &value, int role
     case Core::IUser::Qualifications :  user->setQualification(value.toStringList()); break;
     case Core::IUser::Preferences :  user->setPreferences(value); break;
     case Core::IUser::DataPackConfig: return userBase()->saveUserDynamicData(user->uuid(), Constants::USER_DATA_DATAPACK_CONFIG, value);
+    case Core::IUser::FormUpdateNotification: return userBase()->saveUserDynamicData(user->uuid(), Constants::USER_DATA_FORMUPDATENOTIFICATION, value);
 
         // TODO: Add Xml extra document to model
     case Core::IUser::GenericHeader : user->setExtraDocumentHtml(value, Core::IUser::GenericHeader); Q_EMIT(userDocumentsChanged()); break;

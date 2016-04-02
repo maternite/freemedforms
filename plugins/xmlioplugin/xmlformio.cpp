@@ -53,16 +53,27 @@
 #include <pmhplugin/pmhcore.h>
 #include <pmhplugin/pmhcategorymodel.h>
 
+#include <usermanagerplugin/coreusermodelwrapper.h>
+#include <usermanagerplugin/database/userbase.h>
+#include <usermanagerplugin/constants.h>
+#include <usermanagerplugin/usermodel.h>
+#include <usermanagerplugin/usercore.h>
+
+
 #include <QApplication>
 #include <QDir>
 #include <QTextCodec>
 #include <QFileInfo>
+#include <QCheckBox>
 
 using namespace XmlForms;
 using namespace Internal;
 using namespace Trans::ConstantTranslations;
 
 static inline Core::IPatient *patient() {return Core::ICore::instance()->patient();}
+static inline UserPlugin::UserCore &userCore() {return UserPlugin::UserCore::instance();}
+static inline UserPlugin::UserModel *userModel() {return userCore().userModel();}
+static inline UserPlugin::Internal::UserBase *userBase() {return userCore().userBase();}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////  Inline static functions  //////////////////////////////////////////
@@ -536,6 +547,21 @@ bool XmlFormIO::checkDatabaseFormFileForUpdates() const
                 // warn normal user that a form update exists and that it should be performed by an administrator
                 if (Core::IUser::FormUpdateNotification) {
                     //notify of update
+                    QMessageBox msgBox;
+                    msgBox.setIcon(QMessageBox::Information);
+                    msgBox.setText(tr("A form update is available."));
+                    msgBox.setInformativeText(tr("Only administrators can update forms. Please log in as an administrator or "
+                                                 "contact assistance."));
+                    QCheckBox *cb = new QCheckBox();
+                    msgBox.setCheckBox(cb);
+                    cb->setText(tr("Do not notify me again about FreeMedForms forms updates."));
+                    msgBox.exec();
+                    if ( cb->checkState() == Qt::Checked ) {
+                        qWarning() << "cd is checked" << Core::ICore::instance()->user()->setValue(Core::IUser::FormUpdateNotification, false);
+                        //QModelIndex item = Core::IUser::FormUpdateNotification;
+                        //userModel()->setData(item, QVariant(0), Qt::EditRole);
+                        userBase()->saveUserDynamicData(Core::ICore::instance()->user()->uuid(), UserPlugin::Constants::USER_DATA_FORMUPDATENOTIFICATION, QVariant(0));
+                    }
                 }
             }
         }

@@ -954,7 +954,9 @@ void UserData::addLoginToHistory()
 /** Set FormUpdateNotification to 0 if val is false, to 1 is val is true */
 void UserData::setFormUpdateNotification(const bool &val)
 {
-    setDynamicDataValue(USER_DATA_FORMUPDATENOTIFICATION, val, UserDynamicData::Numeric);
+    qWarning() << "inside UserData::setFormUpdateNotification()";
+    //setDynamicDataValue(USER_DATA_FORMUPDATENOTIFICATION, val, UserDynamicData::Numeric);
+    setDynamicDataValue(USER_DATA_FORMUPDATENOTIFICATION, val);
     setModified(true);
 }
 
