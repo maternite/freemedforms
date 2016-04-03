@@ -108,7 +108,7 @@ public:
         Label,
         UserDate,
         LastModificationDate,
-        CreationDate,
+        CreationDateTime,
         IsValid,
         IsNewlyCreated,
 //        Summary,

@@ -109,7 +109,6 @@ EpisodeBase *EpisodeBase::instance()
     return m_Instance;
 }
 
-// TODO: EPISODES_DATEOFCREATION -> use EPISODE_MODIFICATION table instead ??
 EpisodeBase::EpisodeBase(QObject *parent) :
     QObject(parent), Utils::Database(),
     m_initialized(false)
@@ -133,7 +132,7 @@ EpisodeBase::EpisodeBase(QObject *parent) :
     addField(Table_EPISODES, EPISODES_FORM_PAGE_UID, "FORM_PAGE_UID", FieldIsShortText);
     addField(Table_EPISODES, EPISODES_LABEL, "LABEL", FieldIsShortText);
     addField(Table_EPISODES, EPISODES_USERDATE, "USERDATE", FieldIsTimeStamp, "CURRENT_TIMESTAMP");
-    addField(Table_EPISODES, EPISODES_DATEOFCREATION, "DATECREATION", FieldIsDate);
+    addField(Table_EPISODES, EPISODES_DATETIMEOFCREATION, "DATETIMECREATION", FieldIsDateTime);
     addField(Table_EPISODES, EPISODES_USERCREATOR, "CREATOR", FieldIsUUID);
     addField(Table_EPISODES, EPISODES_PRIORITY, "PRIOR", FieldIsInteger, "1"); // Medium
     addIndex(Table_EPISODES, EPISODES_ID);
@@ -734,7 +733,7 @@ bool EpisodeBase::saveEpisode(const QList<EpisodeData *> &episodes)
             query.bindValue(EPISODES_FORM_PAGE_UID, episode->data(EpisodeData::FormUuid));
             query.bindValue(EPISODES_LABEL, episode->data(EpisodeData::Label));
             query.bindValue(EPISODES_USERDATE, episode->data(EpisodeData::UserDate));
-            query.bindValue(EPISODES_DATEOFCREATION, episode->data(EpisodeData::CreationDate));
+            query.bindValue(EPISODES_DATETIMEOFCREATION, episode->data(EpisodeData::CreationDateTime));
             query.bindValue(EPISODES_USERCREATOR, episode->data(EpisodeData::UserCreatorUuid));
             if (!query.exec()) {
                 LOG_QUERY_ERROR(query);
@@ -788,7 +787,7 @@ bool EpisodeBase::saveEpisode(const QList<EpisodeData *> &episodes)
                                              << EPISODES_FORM_PAGE_UID
                                              << EPISODES_LABEL
                                              << EPISODES_USERDATE
-                                             << EPISODES_DATEOFCREATION
+                                             << EPISODES_DATETIMEOFCREATION
                                              << EPISODES_USERCREATOR
                                              , where));
             query.bindValue(0, episode->data(EpisodeData::PatientUuid));
@@ -796,7 +795,7 @@ bool EpisodeBase::saveEpisode(const QList<EpisodeData *> &episodes)
             query.bindValue(2, episode->data(EpisodeData::FormUuid));
             query.bindValue(3, episode->data(EpisodeData::Label));
             query.bindValue(4, episode->data(EpisodeData::UserDate));
-            query.bindValue(5, episode->data(EpisodeData::CreationDate));
+            query.bindValue(5, episode->data(EpisodeData::CreationDateTime));
             query.bindValue(6, episode->data(EpisodeData::UserCreatorUuid));
             if (!query.exec()) {
                 LOG_QUERY_ERROR(query);
@@ -1068,7 +1067,7 @@ QList<EpisodeData *> EpisodeBase::getEpisodes(const EpisodeBaseQuery &baseQuery)
             e->setData(EpisodeData::PatientUuid, query.value(EPISODES_PATIENT_UID));
             e->setData(EpisodeData::Label , query.value(EPISODES_LABEL));
             e->setData(EpisodeData::UserDate , query.value(EPISODES_USERDATE));
-            e->setData(EpisodeData::CreationDate , query.value(EPISODES_DATEOFCREATION)); // improve this
+            e->setData(EpisodeData::CreationDateTime , query.value(EPISODES_DATETIMEOFCREATION));
             e->setData(EpisodeData::IsValid , query.value(EPISODES_ISVALID));
             e->setData(EpisodeData::IsNewlyCreated , false);
             e->setData(EpisodeData::FormUuid , query.value(EPISODES_FORM_PAGE_UID));
