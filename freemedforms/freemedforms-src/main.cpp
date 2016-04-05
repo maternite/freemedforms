@@ -43,7 +43,7 @@
 #include <QLocale>
 #include <QDebug>
 
-enum { WarnAllPluginSpecs=false };
+enum { WarnAllPluginSpecs=true };
 
 typedef QList<ExtensionSystem::PluginSpec *> PluginSpecSet;
 static const char* COREPLUGINSNAME = "Core";
@@ -212,9 +212,9 @@ int main(int argc, char *argv[])
 //    if (!isFirstInstance && foundAppOptions.contains(QLatin1String(CLIENT_OPTION)))
 //        return sendArguments(app, pluginManager.arguments()) ? 0 : -1;
 
-//    foreach (ExtensionSystem::PluginSpec *spec, plugins) {
-//        qWarning() << "PlugInSpec" << spec->name() << spec->errorString() << spec->state();
-//    }
+    foreach (ExtensionSystem::PluginSpec *spec, plugins) {
+        qWarning() << "PlugInSpec" << spec->name() << spec->errorString() << spec->state();
+    }
 
     pluginManager.loadPlugins();
     if (WarnAllPluginSpecs) {

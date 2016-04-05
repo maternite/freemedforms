@@ -53,6 +53,7 @@
 #include <QtCore/QtPlugin>
 #include <QWidget>
 #include <QDebug>
+#include <QTimer>
 
 static inline Core::ITheme *theme()  { return Core::ICore::instance()->theme(); }
 static inline Core::ISettings *settings()  { return Core::ICore::instance()->settings(); }
@@ -127,7 +128,12 @@ void FormManagerPlugin::extensionsInitialized()
 //    _core->initialize();
 
     // Initialize base and manager
-    episodeBase()->initialize();
+    if(!episodeBase()->initialize()) {
+        qWarning() << "################### inside void FormManagerPlugin::extensionsInitialized()"
+                      " (episodeBase()->initialize()) is false";
+        //pluginSpec()->d->hasError = true;
+        QTimer::singleShot(5000, qApp, SLOT(quit()));
+    }
     formManager().checkFormUpdates();
 
     addAutoReleasedObject(new Core::PluginAboutPage(pluginSpec(), this));

@@ -21,7 +21,7 @@
 /***************************************************************************
  *  Main developer: Eric MAEKER, <eric.maeker@gmail.com>                   *
  *  Contributors:                                                          *
- *       NAME <MAIL@ADDRESS.COM>                                           *
+ *       Jerome Pinguet <jerome@jerome.cc>                                 *
  *       NAME <MAIL@ADDRESS.COM>                                           *
  ***************************************************************************/
 /*!
@@ -34,6 +34,7 @@
 #include "iformio.h"
 #include "subforminsertionpoint.h"
 #include "episodedata.h"
+#include "formmanagerplugin.h"
 
 #include <utils/global.h>
 #include <utils/log.h>
@@ -48,6 +49,7 @@
 #include <coreplugin/constants_tokensandsettings.h>
 #include <coreplugin/iuser.h>
 #include <coreplugin/ipatient.h>
+#include <extensionsystem/iplugin.h>
 #include <coreplugin/icommandline.h>
 
 #include <QCoreApplication>
@@ -223,8 +225,31 @@ bool EpisodeBase::initialize()
     }
 
     if (!checkDatabaseVersion()) {
-        LOG_ERROR(tr("Unable to update the database schema"));
-        return false;
+        qWarning() << "########################################### isAdministrator()"
+                   << Core::ICore::instance()->user()->isAdministrator();
+        if (Core::ICore::instance()->user()->isAdministrator()) {
+            if(upgradeDatabase()) {
+                if(!updateDatabaseVersion()) {
+                    return false;
+                }
+            } else {
+                Utils::warningMessageBox(tr("Episodes Database upgrade error"),
+                                         tr("An error occured during database upgrade."
+                                            "The application will now shut down."));
+                //Core::ICore::instance()->coreAboutToClose();
+                return false;
+            }
+        } else {
+            Utils::warningMessageBox(tr("Episodes Database upgrade available"),
+                                     tr("A new version of FreeMedForms was recently installed on this device."
+                                        "An upgrade is available for EPISODES database.\n"
+                                        "Only administrators can perform database upgrades: please log in as administrator"
+                                        "or contact your system administrator."
+                                        "You can still access data with the former FreeMedForms release."
+                                        "The application will now shut down."));
+            //Core::ICore::instance()->coreAboutToClose();
+            return false;
+        }
     }
 
     if (!checkDatabaseScheme()) {
@@ -339,12 +364,23 @@ void EpisodeBase::populateWithDefaultValues()
 
 /**
  * Checks the current version of the database.
- * Returns \e true if the version is the lastest one.
+ * Returns \e true if database version is equal to client code version.
  */
 bool EpisodeBase::checkDatabaseVersion()
 {
+    qWarning() << "###########################################Inside checkDatabaseVersion()";
+    Utils::Field vField(Constants::Table_VERSION, Constants::VERSION_TEXT);
+    QString databaseVersion = getVersion(vField);
+    return (databaseVersion == Constants::DB_ACTUALVERSION);
+
+}
+
+bool EpisodeBase::upgradeDatabase()
+{
+    qWarning() << "##############################################Inside upgradeDatabase()";
     Utils::Field vField(Constants::Table_VERSION, Constants::VERSION_TEXT);
     QString currentVersion = getVersion(vField);
+
     // Updates from 0.1
     if (currentVersion == "0.1") {
         if (!alterTableForNewField(Constants::Table_EPISODES, Constants::EPISODES_PRIORITY))
@@ -356,33 +392,44 @@ bool EpisodeBase::checkDatabaseVersion()
     // Update from version 0.2 to version 1
     if (currentVersion == "0.2") {
         QSqlDatabase db = QSqlDatabase::database(DB_NAME);
-        if (!db.isOpen()) {                                                     
-            if (!db.open()) {                                                   
+        if (!db.isOpen()) {
+            if (!db.open()) {
                 Utils::Log::addError("Update of episode database", tkTr(Trans::Constants::UNABLE_TO_OPEN_DATABASE_1_ERROR_2)
                                      .arg(db.connectionName()).arg(db.lastError().text()),
-                                     __FILE__, __LINE__);                       
-                return false;                                                   
-            }                                                                   
-        }                                                                       
+                                     __FILE__, __LINE__);
+                return false;
+            }
+        }
         if (db.driverName()=="QMYSQL") {
             QString req = "ALTER TABLE EPISODES MODIFY USERDATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP;";
             QSqlQuery q(db);
-            if (!q.exec(req)) {                                                 
+            if (!q.exec(req)) {
                 //LOG_QUERY_ERROR_FOR("Update database episodes from version 0.2 to 1", q);
-                return false;                       
+                return false;
             }
-        LOG(tr("Episode database updated from version %1 to version: %2")       
-            .arg("0.2")                                                         
-            .arg(Constants::DB_ACTUALVERSION));
+            LOG(tr("Episode database updated from version %1 to version: %2")
+                .arg("0.2")
+                .arg(Constants::DB_ACTUALVERSION));
         }
         if (db.driverName()=="QSQLITE") {
-        LOG(tr("No change happened but episode database updated from version %1 to version: %2")       
-            .arg("0.2")                                                         
-            .arg(Constants::DB_ACTUALVERSION));   
+            LOG(tr("No change happened but episode database updated from version %1 to version: %2")
+                .arg("0.2")
+                .arg(Constants::DB_ACTUALVERSION));
         }
     }
-    // Update the database version
-    return setVersion(vField, Constants::DB_ACTUALVERSION);
+    return true;
+}
+
+bool EpisodeBase::updateDatabaseVersion()
+{
+    qWarning() << "Inside updateDatabaseVersion()";
+    Utils::Field vField(Constants::Table_VERSION, Constants::VERSION_TEXT);
+    if(setVersion(vField, Constants::DB_ACTUALVERSION)) {
+        return true;
+    }
+    LOG(tr("FMF could not update database version to %1. Application will now shutdown.")
+            .arg(Constants::DB_ACTUALVERSION));
+    return false;
 }
 
 void EpisodeBase::onCoreDatabaseServerChanged()

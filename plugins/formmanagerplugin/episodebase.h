@@ -164,6 +164,8 @@ private:
                          );
     void populateWithDefaultValues();
     bool checkDatabaseVersion();
+    bool upgradeDatabase();
+    bool updateDatabaseVersion();
 
     // Episodes
     bool saveEpisodeValidations(Internal::EpisodeData *episode);

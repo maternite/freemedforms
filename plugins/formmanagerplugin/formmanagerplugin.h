@@ -58,6 +58,7 @@ public:
     bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
     ShutdownFlag aboutToShutdown();
+    bool hasError() const;
 
 private Q_SLOTS:
     void postCoreInitialization();
