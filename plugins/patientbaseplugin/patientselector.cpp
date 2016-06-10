@@ -71,6 +71,7 @@
 
 #include <QToolButton>
 #include <QMenu>
+#include <QSortFilterProxyModel>
 
 #include <QDebug>
 
@@ -271,7 +272,10 @@ void PatientSelector::setPatientModel(PatientModel *m)
 {
     Q_ASSERT(m);
     d->m_Model = m;
-    d->ui->tableView->setModel(m);
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel;
+    proxyModel->setSourceModel(m);
+    d->ui->tableView->setModel(proxyModel);
+    d->ui->tableView->setSortingEnabled(true);
     setFieldsToShow(d->m_Fields);
 
     d->ui->tableView->horizontalHeader()->setStretchLastSection(false);
@@ -297,10 +301,46 @@ void PatientSelector::setPatientModel(PatientModel *m)
     d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::FullAddress, QHeaderView::Stretch);
     d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::PractitionnerLkID, QHeaderView::ResizeToContents);
 #endif
-
     d->ui->numberOfPatients->setText(QString::number(m->numberOfFilteredPatients()));
     d->ui->identity->setCurrentPatientModel(m);
     connect(d->m_Model, SIGNAL(currentPatientChanged(QModelIndex)), this, SLOT(setSelectedPatient(QModelIndex)));
+    PatientSelector::setHeaderData();
+}
+
+void PatientSelector::setHeaderData()
+{
+    d->m_Model->setHeaderData(Core::IPatient::UsualName,
+                          Qt::Orientation::Horizontal,
+                          Trans::Constants::USUALNAME,
+                          Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::OtherNames,
+                          Qt::Orientation::Horizontal,
+                          Trans::Constants::OTHERNAMES,
+                          Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::Firstname,
+                          Qt::Orientation::Horizontal,
+                          Trans::Constants::FIRSTNAME,
+                          Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::FullName,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::FULLNAME,
+                              Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::IconizedGender,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::GENDER,
+                              Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::Title,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::TITLE,
+                              Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::DateOfBirth,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::DATE_OF_BIRTH,
+                              Qt::EditRole);
+    d->m_Model->setHeaderData(Core::IPatient::FullAddress,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::FULLADDRESS,
+                              Qt::EditRole);
 }
 
 /** The pointer must not be deleted or shared */
@@ -345,6 +385,7 @@ void PatientSelector::setFieldsToShow(const FieldsToShow fields)
     if (fields & PatientSelector::FullAddress) {
         d->ui->tableView->showColumn(Core::IPatient::FullAddress);
     }
+
 }
 
 /** Change the way the search line edit reacts while the user is typing a search string. */

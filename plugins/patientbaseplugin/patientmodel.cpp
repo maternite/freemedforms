@@ -771,6 +771,12 @@ bool PatientModel::setData(const QModelIndex &index, const QVariant &value, int 
     return true;
 }
 
+bool PatientModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
+{
+    d->m_SqlPatient->setHeaderData(section, orientation, value, role);
+    return true;
+}
+
 void PatientModel::setFilter(const QString &name, const QString &firstname, const QString &uuid, const FilterOn on)
 {
     QString saveFilter = d->m_ExtraFilter;
