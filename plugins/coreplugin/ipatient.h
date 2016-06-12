@@ -157,7 +157,7 @@ public:
     /** Set the current active patient to \e uuid */
     virtual void setCurrentPatientUid(const QString &uid) {Q_UNUSED(uid);}
 
-    int	columnCount(const QModelIndex & = QModelIndex()) const {return NumberOfColumns;}
+    int	columnCount(const QModelIndex & = QModelIndex()) const {return NumberOfColumns+1;}
     int	rowCount(const QModelIndex & = QModelIndex()) const {return 1;}
 
     virtual QModelIndex currentPatientIndex() const = 0;

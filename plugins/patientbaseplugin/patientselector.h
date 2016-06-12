@@ -93,7 +93,7 @@ public:
 
     void setSearchMode(const int search);
     void setPatientModel(PatientModel *m);
-    void setHeaderData();
+    void setHorizontalHeaderLabels();
     void setFieldsToShow(const FieldsToShow fields);
     void setRefreshSearchResultMethod(RefreshSearchResult method);
     void setOnPatientActivatedSetAsCurrent(bool setAsCurrent);

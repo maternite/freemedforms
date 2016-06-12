@@ -21,7 +21,7 @@
 /***************************************************************************
  *  Main developer: Eric MAEKER, <eric.maeker@gmail.com>                   *
  *  Contributors:                                                          *
- *       NAME <MAIL@ADDRESS.COM>                                           *
+ *       Jérôme Pinguet <jerome@jerome.cc>                                 *
  *       NAME <MAIL@ADDRESS.COM>                                           *
  ***************************************************************************/
 /**
@@ -81,6 +81,7 @@ public:
     PatientModelPrivate(PatientModel *parent) :
         m_SqlPatient(0),
         m_SqlPhoto(0),
+        m_HeaderView(0),
         m_EmitCreationAtSubmit(false),
         m_RefreshModelOnCoreDatabaseServerChanged(false),
         q(parent)
@@ -96,6 +97,10 @@ public:
         if (m_SqlPhoto) {
             delete m_SqlPhoto;
             m_SqlPhoto = 0;
+        }
+        if (m_HeaderView) {
+            delete m_HeaderView;
+            m_HeaderView = 0;
         }
 //        if (m_PatientWrapper) {
 //            delete m_PatientWrapper;
@@ -221,6 +226,7 @@ public:
 
 public:
     QSqlTableModel *m_SqlPatient, *m_SqlPhoto;
+    QHeaderView *m_HeaderView;
     QString m_ExtraFilter;
     QString m_LkIds;
     QString m_UserUuid;
@@ -775,6 +781,20 @@ bool PatientModel::setHeaderData(int section, Qt::Orientation orientation, const
 {
     d->m_SqlPatient->setHeaderData(section, orientation, value, role);
     return true;
+}
+
+QVariant PatientModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+
+    if (orientation == Qt::Horizontal) {
+            if (role == Qt::DisplayRole)
+            return  d->m_SqlPatient->headerData(section, orientation, role);
+    }
+    else if (orientation == Qt::Vertical) {
+        if (role == Qt::DisplayRole)
+            return QVariant();
+        }
+    return QAbstractTableModel::headerData(section, orientation, role);
 }
 
 void PatientModel::setFilter(const QString &name, const QString &firstname, const QString &uuid, const FilterOn on)

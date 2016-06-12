@@ -273,12 +273,12 @@ void PatientSelector::setPatientModel(PatientModel *m)
     Q_ASSERT(m);
     d->m_Model = m;
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel;
+    PatientSelector::setHorizontalHeaderLabels();
     proxyModel->setSourceModel(m);
     d->ui->tableView->setModel(proxyModel);
     d->ui->tableView->setSortingEnabled(true);
     setFieldsToShow(d->m_Fields);
-
-    d->ui->tableView->horizontalHeader()->setStretchLastSection(false);
+    //d->ui->tableView->horizontalHeader()->setStretchLastSection(false);
 #if QT_VERSION < 0x050000
     d->ui->tableView->horizontalHeader()->setResizeMode(Core::IPatient::UsualName, QHeaderView::Stretch);
     d->ui->tableView->horizontalHeader()->setResizeMode(Core::IPatient::OtherNames, QHeaderView::Stretch);
@@ -299,48 +299,47 @@ void PatientSelector::setPatientModel(PatientModel *m)
     d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::Title, QHeaderView::ResizeToContents);
     d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::DateOfBirth, QHeaderView::ResizeToContents);
     d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::FullAddress, QHeaderView::Stretch);
-    d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::PractitionnerLkID, QHeaderView::ResizeToContents);
+    //d->ui->tableView->horizontalHeader()->setSectionResizeMode(Core::IPatient::PractitionnerLkID, QHeaderView::ResizeToContents);
 #endif
     d->ui->numberOfPatients->setText(QString::number(m->numberOfFilteredPatients()));
     d->ui->identity->setCurrentPatientModel(m);
     connect(d->m_Model, SIGNAL(currentPatientChanged(QModelIndex)), this, SLOT(setSelectedPatient(QModelIndex)));
-    PatientSelector::setHeaderData();
 }
 
-void PatientSelector::setHeaderData()
+void PatientSelector::setHorizontalHeaderLabels()
 {
     d->m_Model->setHeaderData(Core::IPatient::UsualName,
-                          Qt::Orientation::Horizontal,
-                          Trans::Constants::USUALNAME,
-                          Qt::EditRole);
-    d->m_Model->setHeaderData(Core::IPatient::OtherNames,
-                          Qt::Orientation::Horizontal,
-                          Trans::Constants::OTHERNAMES,
-                          Qt::EditRole);
-    d->m_Model->setHeaderData(Core::IPatient::Firstname,
-                          Qt::Orientation::Horizontal,
-                          Trans::Constants::FIRSTNAME,
-                          Qt::EditRole);
-    d->m_Model->setHeaderData(Core::IPatient::FullName,
                               Qt::Orientation::Horizontal,
-                              Trans::Constants::FULLNAME,
-                              Qt::EditRole);
-    d->m_Model->setHeaderData(Core::IPatient::IconizedGender,
-                              Qt::Orientation::Horizontal,
-                              Trans::Constants::GENDER,
-                              Qt::EditRole);
-    d->m_Model->setHeaderData(Core::IPatient::Title,
-                              Qt::Orientation::Horizontal,
-                              Trans::Constants::TITLE,
-                              Qt::EditRole);
+                              Trans::Constants::USUALNAME,
+                              Qt::DisplayRole);
     d->m_Model->setHeaderData(Core::IPatient::DateOfBirth,
                               Qt::Orientation::Horizontal,
                               Trans::Constants::DATE_OF_BIRTH,
-                              Qt::EditRole);
+                              Qt::DisplayRole);
+    d->m_Model->setHeaderData(Core::IPatient::OtherNames,
+                          Qt::Orientation::Horizontal,
+                          Trans::Constants::OTHERNAMES,
+                          Qt::DisplayRole);
+    d->m_Model->setHeaderData(Core::IPatient::Firstname,
+                          Qt::Orientation::Horizontal,
+                          Trans::Constants::FIRSTNAME,
+                          Qt::DisplayRole);
+    d->m_Model->setHeaderData(Core::IPatient::FullName,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::FULLNAME,
+                              Qt::DisplayRole);
+    d->m_Model->setHeaderData(Core::IPatient::IconizedGender,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::GENDER,
+                              Qt::DisplayRole);
+    d->m_Model->setHeaderData(Core::IPatient::Title,
+                              Qt::Orientation::Horizontal,
+                              Trans::Constants::TITLE,
+                              Qt::DisplayRole);
     d->m_Model->setHeaderData(Core::IPatient::FullAddress,
                               Qt::Orientation::Horizontal,
                               Trans::Constants::FULLADDRESS,
-                              Qt::EditRole);
+                              Qt::DisplayRole);
 }
 
 /** The pointer must not be deleted or shared */

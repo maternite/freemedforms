@@ -30,6 +30,8 @@
 #include <patientbaseplugin/patientbase_exporter.h>
 
 #include <QAbstractTableModel>
+#include <QHeaderView>
+
 QT_BEGIN_NAMESPACE
 class QSqlRecord;
 QT_END_NAMESPACE
@@ -74,6 +76,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role);
 
     void setFilter(const QString &name, const QString &firstname, const QString &uuid = QString::null, const FilterOn on = FilterOnFullName);
